@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        
+        #body{
+            
+            background: rgb(63, 63, 253);
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+        }
+    #main{
+        
+        width: 50%;
+        height: 62vh;
+        position: absolute;
+        background-color: #fff;
+        left: 23%;
+        top: 17%;
+        /* margin:7rem;
+        margin-left: 16rem;
+        background: #00e; */
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .block{
+        display: inline;
+    }
+    #status{
+        background-color: #ff8e04;
+        border-radius: 0.3rem;
+        padding: 0.25rem;
+    }  
+
+    .task{
+        display: flex;
+        width: 100%;
+        margin-left: 0.6rem;
+        
+    }
+    #add{margin-left: 3rem;}
+    #head{padding-top: 0.8rem; padding-bottom: 0.8rem; display: flex;
+        justify-self: flex-end;
+    }
+    .add{padding: 0.6rem;}
+    </style>
+</head>
+
+
+
+<body>
+    <div id="body">
+    <div id="main">
+    
+        <div id="head"><strong style="padding: 0.7rem;">Task List</strong>
+            <form action="" method="POST">
+                {% csrf_token %}
+                    
+        <input type="text" id="add" placeholder="Task name" class="add" name="add"/> 
+        <input type="datetime-local" class="add" name="date"/>
+        <input type="submit" class="add" value="Add"/>
+    </form>
+        </div><hr/>
+        
+
+{% for d in data reversed %}
+        <div class="task">
+           <form method="POST">
+            {% csrf_token %}
+            <div class="block">
+                <label style="text-decoration-line: line-through;">{{ d.task_name }}</label> <span> 
+                
+                {% if d.status == 'Finished' %}
+                <label id="status" style="background-color: #00cc00; "> {{ d.status}}</label></span>        
+                     
+                <br>
+                <label><small style="text-decoration-line: line-through;">{{d.task_date}}</small></label>
+
+            </div>
+            
+            <div>
+            
+            <button type="submit" disabled formaction="confirm/{{d.id}}">Confirm</button> 
+            
+            {% elif d.status == 'Pending' %}
+            <label id="status" > {{ d.status}}</label></span>        
+                 
+            <br>
+            <label><small>{{d.task_date}}</small></label>
+
+        </div>
+        
+        <div>
+        
+        <button type="submit" formaction="confirm/{{d.id}}">Confirm</button> {% endif %}
+            
+            <span><button type="submit" formaction="delete/{{ d.id }}">Delete</button></span>
+            </div>
+            </form>
+        </div>
+        <hr/>
+        {% endfor %}
+
+        </div>
+    </div>
+</body>
+</html>
